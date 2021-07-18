@@ -12,6 +12,7 @@ require('actions/questions/myQuestionsAction.php');
     <br><br>
     <div class="container">
 
+
         <?php
 
         while ($question = $getAllmyQuestions->fetch()) {
