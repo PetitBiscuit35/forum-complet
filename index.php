@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('actions/users/securityAction.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -8,6 +8,7 @@ require('actions/users/securityAction.php');
 
 <body>
     <?php include 'includes/nav.php'; ?>
+
 </body>
 
 </html>

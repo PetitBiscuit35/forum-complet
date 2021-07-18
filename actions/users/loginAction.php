@@ -1,40 +1,45 @@
 <?php
+session_start();
 require('actions/database.php');
 
-//validation du form
+//Validation du formulaire
 if (isset($_POST['validate'])) {
-    if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
 
-        //données de l'utilisateur 
+    //Vérifier si l'user a bien complété tous les champs
+    if (!empty($_POST['pseudo']) and !empty($_POST['password'])) {
+
+        //Les données de l'user
         $user_pseudo = htmlspecialchars($_POST['pseudo']);
         $user_password = htmlspecialchars($_POST['password']);
 
-        $checkIfUserExists = $bdd->prepare('SELECT *  FROM users WHERE pseudo = ?');
+        //Vérifier si l'utilisateur existe (si le pseudo est correct)
+        $checkIfUserExists = $bdd->prepare('SELECT * FROM users WHERE pseudo = ?');
         $checkIfUserExists->execute(array($user_pseudo));
 
         if ($checkIfUserExists->rowCount() > 0) {
 
+            //Récupérer les données de l'utilisateur
             $usersInfos = $checkIfUserExists->fetch();
 
-            //vérifier si le mot de passe est correct
+            //Vérifier si le mot de passe est correct
             if (password_verify($user_password, $usersInfos['mdp'])) {
 
-                //création d'une session (authentification)
+                //Authentifier l'utilisateur sur le site et récupérer ses données dans des variables globales sessions
                 $_SESSION['auth'] = true;
-                $_SESSION['id'] = $userInfo['id'];
-                $_SESSION['lastname'] = $userInfo['nom'];
-                $_SESSION['firstname'] = $userInfo['prenom'];
-                $_SESSION['pseudo'] = $userInfo['pseudo'];
+                $_SESSION['id'] = $usersInfos['id'];
+                $_SESSION['lastname'] = $usersInfos['nom'];
+                $_SESSION['firstname'] = $usersInfos['prenom'];
+                $_SESSION['pseudo'] = $usersInfos['pseudo'];
 
-                //rediriger l'utilisateur vers la page d'accueil!
+                //Rediriger l'utilisateur vers la page d'accueil
                 header('Location: index.php');
             } else {
-                $errorMsg = "Votre mot de passe est incorrect";
+                $errorMsg = "Votre mot de passe est incorrect...";
             }
         } else {
-            $errorMsg = "Votre pseudo est incorrect";
+            $errorMsg = "Votre pseudo est incorrect...";
         }
     } else {
-        $errorMsg = "Veuillez compléter tous les champs";
+        $errorMsg = "Veuillez compléter tous les champs...";
     }
 }
