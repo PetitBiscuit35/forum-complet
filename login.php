@@ -27,6 +27,9 @@
         <a href="signup.php">
             <p>je m'inscris</p>
         </a>
+        <a href="index.php">
+            <p>Accéder au site sans s'identifier</p>
+        </a>
     </form>
 
 </body>
